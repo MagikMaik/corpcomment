@@ -1,4 +1,3 @@
-import React from "react";
 import Header from "./Header";
 import FeedBackList from "../feedback/FeedBackList";
 import { TFeedbackItem } from "../../lib/types";
@@ -9,6 +8,7 @@ type ContainerProps = {
   errorMessage: string;
   handleAddItems: (text: string) => void;
 };
+
 export default function Container({
   feedbackItems,
   isLoading,

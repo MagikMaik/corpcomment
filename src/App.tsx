@@ -1,13 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Container from "./Components/layout/Container";
 import Footer from "./Components/layout/Footer";
-import HashTagList from "./Components/HashTagList";
+import HashTagList from "./Components/hashtag/HashTagList";
 import { TFeedbackItem } from "./lib/types";
+import HashTagItem from "./Components/hashtag/HashTagItem";
 
 function App() {
   const [feedbackItems, setFeedbackItems] = useState<TFeedbackItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectCompany, setSelectCompany] = useState("");
+
+  const filteredFeedbackItems = useMemo(
+    () =>
+      selectCompany
+        ? feedbackItems.filter(
+            (feedBackItem) => feedBackItem.company === selectCompany
+          )
+        : feedbackItems,
+    [selectCompany, feedbackItems]
+  );
+
+  const companyList = useMemo(
+    () =>
+      feedbackItems
+        .map((item) => item.company)
+        .filter((company, index, array) => array.indexOf(company) === index),
+    [feedbackItems]
+  );
 
   const handleAddItems = async (text: string) => {
     const companyName = text
@@ -37,6 +57,10 @@ function App() {
     );
   };
 
+  const handleSelectedCompany = (company: string) => {
+    setSelectCompany(company);
+  };
+
   useEffect(() => {
     const fetchFeedbackItems = async () => {
       setIsLoading(true);
@@ -64,12 +88,20 @@ function App() {
     <div className="app">
       <Footer />
       <Container
-        feedbackItems={feedbackItems}
+        feedbackItems={filteredFeedbackItems}
         isLoading={isLoading}
         errorMessage={errorMessage}
         handleAddItems={handleAddItems}
       />
-      <HashTagList />
+      <HashTagList>
+        {companyList.map((company: string) => (
+          <HashTagItem
+            key={company}
+            company={company}
+            onSelectCompany={handleSelectedCompany}
+          />
+        ))}
+      </HashTagList>
     </div>
   );
 }
