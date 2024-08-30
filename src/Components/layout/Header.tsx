@@ -1,20 +1,18 @@
-import React from "react";
-import FeedBackList from "../feedback/FeedBackList";
 import Pattern from "../Pattern";
 import Logo from "../Logo";
 import PageHeading from "../PageHeading";
 import FeedBackForm from "../feedback/FeedBackForm";
 
-type HeaderProps = {
-  handleAddItems: (text: string) => void;
-};
-export default function Header({ handleAddItems }: HeaderProps) {
+import { useFeedbackItemsStore } from "../../stores/FeedbackItemsContext";
+
+export default function Header() {
+  const addItemToList = useFeedbackItemsStore((state) => state.addItemToList);
   return (
     <header>
       <Pattern />
       <Logo />
       <PageHeading />
-      <FeedBackForm onAddToList={handleAddItems} />
+      <FeedBackForm onAddToList={addItemToList} />
     </header>
   );
 }
