@@ -1,5 +1,5 @@
-import { createContext, useContext } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { createContext } from "react";
+import { useMemo, useState } from "react";
 import { TFeedbackItem } from "../lib/types";
 import { useFeedbackItems } from "../lib/hooks";
 
